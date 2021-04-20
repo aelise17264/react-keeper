@@ -1,6 +1,10 @@
 import React, {useState} from "react";
+import Fab from '@material-ui/core/Fab';
+import Zoom from '@material-ui/core/Zoom';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 export default function Create({addNote}) {
+  const[expanded, setExpanded] = useState(false)
     const [input, setInput] = useState({
       title: "",
       content: ""
@@ -25,21 +29,33 @@ export default function Create({addNote}) {
       evt.preventDefault()
     }
 
+  function expand(){
+    setExpanded(true);
+  }
+
+
   return (
     <div>
       <form className="create-note">
+      {expanded ?
         <input 
         onChange={handleChange} 
         name="title" 
         placeholder="Title"
-        value={input.title} />
+        value={input.title}           
+        /> : null
+        }
         <textarea
+        onClick={expand}
         onChange={handleChange}
         value={input.content}
         name="content" 
         placeholder="Take a note..." 
-        rows="3" />
-        <button onClick={updateNoteList}>Add</button>
+        rows={expanded? 3 : 1} />
+
+        <Zoom in={expanded}>
+        <Fab onClick={updateNoteList}><AddCircleOutlineIcon /></Fab>
+        </Zoom>
       </form>
     </div>
   );
